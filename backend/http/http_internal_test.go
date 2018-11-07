@@ -237,6 +237,7 @@ func TestParseName(t *testing.T) {
 		{"http://example.com/dir/", "With colon :", errURLJoinFailed, ""},
 		{"http://example.com/dir/", rest.URLPathEscape("With colon :"), nil, "With colon :"},
 		{"http://example.com/Dungeons%20%26%20Dragons/", "/Dungeons%20&%20Dragons/D%26D%20Basic%20%28Holmes%2C%20B%2C%20X%2C%20BECMI%29/", nil, "D&D Basic (Holmes, B, X, BECMI)/"},
+		{"http://example.com/Books/", "./test.pdf", nil, "test.pdf"},
 	} {
 		u, err := url.Parse(test.base)
 		require.NoError(t, err)
@@ -323,5 +324,13 @@ func TestParseCaddy(t *testing.T) {
 		"v1.36-156-gca76b3fb-team-driveβ/",
 		"v1.36-156-ge1f0e0f5-team-driveβ/",
 		"v1.36-22-g06ea13a-ssh-agentβ/",
+	})
+}
+
+func TestParseTrove(t *testing.T) {
+	parseHTML(t, "trove.html", "https://thetrove.net/Books/", []string{
+		"D&D Adventure Grid.pdf",
+		"D&D Character Sheets 2017.pdf",
+		"dmca.html",
 	})
 }
